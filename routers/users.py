@@ -26,7 +26,7 @@ async def send_authorizarion_code(request: TelegramSendCode, api_key = Depends(a
             }}
         raise HTTPException(status.HTTP_400_BAD_REQUEST, error)
     except ApiIdInvalidError:
-        return HTTPException(status.HTTP_400_BAD_REQUEST, 'Invalid API_ID OR API_HASH')
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, 'Invalid API_ID OR API_HASH')
     result = {'session': client.session.save()}
     return result
 
@@ -41,7 +41,7 @@ async def login_telegram(request: TelegramLogin, api_key = Depends(auth.get_user
     except PhoneCodeExpiredError:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, 'The confirmation code has expired')
     except ApiIdInvalidError:
-        return HTTPException(status.HTTP_400_BAD_REQUEST, 'Invalid API_ID OR API_HASH')
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, 'Invalid API_ID OR API_HASH')
     return data.to_dict()
 
 
