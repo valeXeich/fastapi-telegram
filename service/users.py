@@ -7,8 +7,14 @@ from utils.text import generate_user_api_key
 
 async def create_api_key(session: AsyncSession):
     user_api_key = await generate_user_api_key()
-    User(api_key=user_api_key)
-    session.add(result)
+    user = User(api_key=user_api_key)
+    session.add(user)
     await session.commit()
     result = {'api_key': user_api_key}
     return result
+
+
+async def get_api_keys(session: AsyncSession):
+    query = select(User.api_key).select_from(User)
+    result = await session.execute(query)
+    return result.scalars().all()

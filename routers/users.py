@@ -1,17 +1,14 @@
 from fastapi import APIRouter, Depends, status, HTTPException
-from dotenv import load_dotenv
 from telethon.errors.rpcerrorlist import PhoneCodeExpiredError, FloodWaitError
 
 from auth import auth
+from config import settings
 from schemas.users import Text
-from schemas.telegram import TelegramLogin, TelegramSendCode, TelegramResponseCode
-from schemas.settings import Settings
+from schemas.telegram import TelegramLogin, TelegramSendCode, TelegramResponseCode, SendMessage
 from utils.text import generate_random_string
 from utils.telegram_client import get_telegram_client
 
-load_dotenv()
 
-settings = Settings()
 router = APIRouter()
 
 
@@ -44,12 +41,12 @@ async def login_telegram(request: TelegramLogin, api_key = Depends(auth.get_user
     return data.to_dict()
 
 
-@router.get('/send-random-text', status_code=status.HTTP_200_OK, response_model=Text)
-async def send_random_text(chat_id: int, limit_length: int = 10, api_key = Depends(auth.get_user_api_key)):
+@router.post('/send-random-text', status_code=status.HTTP_201_CREATED, response_model=Text)
+async def send_random_text(request: SendMessage, api_key = Depends(auth.get_user_api_key)):
     client = await get_telegram_client(settings)
     await client.connect()
-    random_text = await generate_random_string(string_length=limit_length)
-    await client.send_message(chat_id, random_text)
+    random_text = await generate_random_string(string_length=request.text_length)
+    await client.send_message(request.chat_id, random_text)
     data = {'text': random_text}
     return data
 

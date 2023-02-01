@@ -14,3 +14,8 @@ class TelegramResponseCode(BaseModel):
 
 class TelegramSendCode(BaseModel):
     phone_number: str
+
+
+class SendMessage(BaseModel):
+    text_length: int = 10
+    chat_id: int
