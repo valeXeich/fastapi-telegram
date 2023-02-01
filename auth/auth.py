@@ -5,7 +5,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import Security, HTTPException, status
 
 
-admin_api_key = APIKeyHeader(name="apikey", auto_error=False)
+admin_api_key = APIKeyHeader(name="Authorization-Admin", auto_error=False)
 user_api_key = HTTPBearer()
 
 
