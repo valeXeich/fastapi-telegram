@@ -7,5 +7,10 @@ class TelegramLogin(BaseModel):
     session: str
 
 
+class TelegramResponseCode(BaseModel):
+    message: str = 'send'
+    session: str
+
+
 class TelegramSendCode(BaseModel):
     phone_number: str
