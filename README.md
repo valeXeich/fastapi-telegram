@@ -1,1 +1,9 @@
 # fastapi-telegram
+
+The .env file looks like this
+
+```python
+ADMIN_API_KEY= ...
+API_ID= ...
+API_HASH= ...
+```
